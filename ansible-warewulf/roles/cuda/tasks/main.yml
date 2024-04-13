@@ -1,0 +1,19 @@
+---
+- name: Import the CUDA repository key
+  ansible.builtin.get_url:
+    url: http://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/7fa2af80.pub
+    dest: /tmp/cuda-key.pub
+
+- name: Add the CUDA repository
+  ansible.builtin.yum_repository:
+    name: cuda
+    description: CUDA Repository
+    baseurl: http://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: file:///tmp/cuda-key.pub
+
+- name: Install CUDA
+  ansible.builtin.yum:
+    name: cuda
+    state: present

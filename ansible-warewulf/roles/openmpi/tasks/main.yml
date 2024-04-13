@@ -1,0 +1,26 @@
+---
+- name: Install OpenMPI dependencies
+  ansible.builtin.yum:
+    name:
+      - gcc
+      - gcc-c++
+      - make
+    state: present
+
+- name: Download OpenMPI
+  ansible.builtin.get_url:
+    url: https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-5.0.3.tar.gz
+    dest: /tmp/openmpi-5.0.3.tar.gz
+
+- name: Extract OpenMPI
+  ansible.builtin.unarchive:
+    src: /tmp/openmpi-5.0.3.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Configure and install OpenMPI
+  ansible.builtin.shell:
+    cmd: |
+      ./configure --prefix=/usr/local
+      make all install
+    chdir: /tmp/openmpi-5.0.3

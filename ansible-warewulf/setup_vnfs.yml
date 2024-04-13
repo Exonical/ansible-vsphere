@@ -1,0 +1,51 @@
+---
+- name: Setup Warewulf VNFS Container and Install Additional Software
+  hosts: warewulf_master
+  become: yes
+  roles:
+    - cuda
+    - mellanox_ofed
+    - openmpi
+---
+- name: Setup Warewulf VNFS Container and Install Additional Software
+  hosts: warewulf_master
+  become: yes
+  vars:
+    vnfs_name: rocky8
+    vnfs_directory: /var/warewulf/chroots/{{ vnfs_name }}
+    release_version: "8"
+
+  tasks:
+    - name: Create VNFS directory
+      file:
+        path: "{{ vnfs_directory }}"
+        state: directory
+        mode: '0755'
+
+    - name: Install required packages for VNFS
+      dnf:
+        name:
+        - "@Minimal Install"
+        state: present
+        installroot: "{{ vnfs_directory }}"
+        releasever: "{{ release_version }}"
+
+    - name: Clean up DNF caches in the chroot to save space
+      command: dnf clean all
+      args:
+        chroot: "{{ vnfs_directory }}"
+
+    - name: Register the VNFS container with Warewulf
+      command: "wwctl container import {{ vnfs_directory }} {{ vnfs_name }}"
+      args:
+        creates: "/var/warewulf/containers/{{ vnfs_name }}"
+
+    - name: Build the VNFS container
+      command: "wwctl container build {{ vnfs_name }}"
+      args:
+        creates: "/var/warewulf/provision/{{ vnfs_name }}"
+
+  roles:
+    - cuda
+    - mellanox_ofed
+    - openmpi

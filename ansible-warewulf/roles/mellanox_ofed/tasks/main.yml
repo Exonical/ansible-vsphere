@@ -1,0 +1,23 @@
+---
+- name: Import Mellanox OFED public key
+  ansible.builtin.rpm_key:
+    state: present
+    key: http://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox
+
+- name: Add Mellanox OFED repository
+  ansible.builtin.yum_repository:
+    name: Mellanox_OFED
+    description: Mellanox OFED repository
+    baseurl: https://linux.mellanox.com/public/repo/mlnx_ofed/latest-24.01/rhel8.9/$basearch
+    gpgcheck: yes
+    gpgkey: http://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox
+    enabled: yes
+
+- name: Install Mellanox IB packages
+  ansible.builtin.yum:
+    name:
+      - rdma-core
+      - libibverbs-utils
+      - infiniband-diags
+      - perftest
+    state: present
