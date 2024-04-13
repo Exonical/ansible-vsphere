@@ -66,7 +66,7 @@ Once inside, you can install additional software and make other configurations.
     exit
     ```
 
-## Step 5: Build the VNFS
+## Step 5: Build the VNF
 
 Build the VNFS container to prepare it for deployment:
 
