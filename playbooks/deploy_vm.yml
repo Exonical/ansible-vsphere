@@ -1,0 +1,7 @@
+---
+- name: Deploy Rocky Linux VMs
+  hosts: rocky_linux
+  gather_facts: no
+  roles:
+    - common
+    - rocky_linux_vm

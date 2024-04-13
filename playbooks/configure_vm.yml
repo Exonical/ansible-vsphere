@@ -1,0 +1,6 @@
+---
+- name: Configure Rocky Linux VMs
+  hosts: rocky_linux
+  gather_facts: yes
+  roles:
+    - rocky_linux_vm

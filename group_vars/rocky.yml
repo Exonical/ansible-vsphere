@@ -1,0 +1,17 @@
+vm_template: "Rocky8_Template"
+network_name: "VM Network"
+vm_hardware:
+  memory_mb: 8192
+  num_cpus: 4
+vm_network:
+  type: 'static'
+  ip: '192.168.1.101'
+  netmask: '255.255.255.0'
+  gateway: '192.168.1.1'
+  dns_servers:
+    - '1.1.1.1'
+    - '1.0.0.1'
+timezone: "America/New_York"
+additional_packages:
+  - usbguard
+  - git
